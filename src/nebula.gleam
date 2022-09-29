@@ -6,8 +6,9 @@ import gleam/bit_builder.{BitBuilder}
 import gleam/option.{None}
 import gleam/erlang
 import gleam/int
-import component.{Element, Props, Text}
+import component.{Component, Element, Props, Text}
 import html.{render}
+import header.{HeaderProps, header}
 
 // Define a HTTP service
 //
@@ -21,12 +22,14 @@ pub fn my_service(request: Request(t)) -> Response(BitBuilder) {
       "div",
       Props(
         key: None,
+        rprops: HeaderProps(title: ""),
         children: [
-          Element("h2", Props(key: None, children: [Text("Hello, World!")])),
+          Component(header, HeaderProps(title: "Hello, World!")),
           Element(
             "p",
             Props(
               key: None,
+              rprops: HeaderProps(title: ""),
               children: [Text("The current time is: "), Text(current_time)],
             ),
           ),
