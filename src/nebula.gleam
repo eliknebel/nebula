@@ -6,9 +6,8 @@ import gleam/bit_builder.{BitBuilder}
 import gleam/option.{None, Some}
 import component.{Component, Props}
 import render.{render}
-import components/header.{HeaderProps, header}
 import components/clock.{ClockProps, clock}
-import html.{el}
+import components/html.{BodyProps, H1Props, HtmlProps, body, el, h1, html, text}
 
 // Define a HTTP service
 //
@@ -16,16 +15,21 @@ pub fn my_service(_request: Request(t)) -> Response(BitBuilder) {
   let app =
     Component(fn() {
       [
-        el(
-          "div",
-          Props(
-            key: None,
-            children: [
-              header(HeaderProps(title: "Hello, World!")),
-              clock(ClockProps(label: Some("The current time is: "))),
-            ],
-          ),
-        ),
+        html(HtmlProps(children: [
+          body(BodyProps(children: [
+            el(
+              "div",
+              Props(
+                key: None,
+                children: [
+                  h1(H1Props(children: [text("Hello, World!")])),
+                  clock(ClockProps(label: Some("The current time is: "))),
+                ],
+              ),
+            ),
+            el("div", Props(key: None, children: [text("test")])),
+          ])),
+        ])),
       ]
     })
 

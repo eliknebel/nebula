@@ -2,7 +2,7 @@ import gleam/erlang
 import gleam/int
 import gleam/option.{None, Option, Some}
 import component.{Component}
-import html.{text}
+import components/html.{text}
 
 pub type ClockProps {
   ClockProps(label: Option(String))
