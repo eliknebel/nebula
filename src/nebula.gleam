@@ -3,36 +3,24 @@ import gleam/http/cowboy
 import gleam/http/response.{Response}
 import gleam/http/request.{Request}
 import gleam/bit_builder.{BitBuilder}
-import gleam/option.{None}
-import gleam/erlang
-import gleam/int
-import component.{Component, Element, Props, Text}
-import html.{render}
-import header.{HeaderProps, header}
+import gleam/option.{None, Some}
+import component.{Props}
+import render.{render}
+import components/header.{HeaderProps, header}
+import components/clock.{ClockProps, clock}
+import html.{el}
 
 // Define a HTTP service
 //
-pub fn my_service(request: Request(t)) -> Response(BitBuilder) {
-  let current_time =
-    erlang.system_time(erlang.Second)
-    |> int.to_string()
-
+pub fn my_service(_request: Request(t)) -> Response(BitBuilder) {
   let body =
-    Element(
+    el(
       "div",
       Props(
         key: None,
-        rprops: HeaderProps(title: ""),
         children: [
-          Component(header, HeaderProps(title: "Hello, World!")),
-          Element(
-            "p",
-            Props(
-              key: None,
-              rprops: HeaderProps(title: ""),
-              children: [Text("The current time is: "), Text(current_time)],
-            ),
-          ),
+          header(HeaderProps(title: "Hello, World!")),
+          clock(ClockProps(label: Some("The current time is: "))),
         ],
       ),
     )
