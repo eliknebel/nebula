@@ -4,7 +4,7 @@ import gleam/http/response.{Response}
 import gleam/http/request.{Request}
 import gleam/bit_builder.{BitBuilder}
 import gleam/option.{None, Some}
-import component.{Props}
+import component.{Component, Props}
 import render.{render}
 import components/header.{HeaderProps, header}
 import components/clock.{ClockProps, clock}
@@ -13,18 +13,24 @@ import html.{el}
 // Define a HTTP service
 //
 pub fn my_service(_request: Request(t)) -> Response(BitBuilder) {
+  let app =
+    Component(fn() {
+      [
+        el(
+          "div",
+          Props(
+            key: None,
+            children: [
+              header(HeaderProps(title: "Hello, World!")),
+              clock(ClockProps(label: Some("The current time is: "))),
+            ],
+          ),
+        ),
+      ]
+    })
+
   let body =
-    el(
-      "div",
-      Props(
-        key: None,
-        children: [
-          header(HeaderProps(title: "Hello, World!")),
-          clock(ClockProps(label: Some("The current time is: "))),
-        ],
-      ),
-    )
-    |> render()
+    render(app)
     |> bit_builder.from_string
 
   response.new(200)
