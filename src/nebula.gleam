@@ -47,6 +47,6 @@ pub fn my_service(request: Request(t)) -> Response(BitBuilder) {
 // Start it on port 3000!
 //
 pub fn main() {
-  cowboy.start(my_service, on_port: 3000)
+  let _ = cowboy.start(my_service, on_port: 3000)
   process.sleep_forever()
 }
