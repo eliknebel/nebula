@@ -6,7 +6,8 @@ import gleam/bit_builder.{BitBuilder}
 import gleam/option.{None}
 import gleam/erlang
 import gleam/int
-import component.{Html, Props, el, render}
+import component.{Element, Props, Text}
+import html.{render}
 
 // Define a HTTP service
 //
@@ -16,17 +17,17 @@ pub fn my_service(request: Request(t)) -> Response(BitBuilder) {
     |> int.to_string()
 
   let body =
-    el(
+    Element(
       "div",
       Props(
         key: None,
         children: [
-          el("h2", Props(key: None, children: [Html("Hello, World!")])),
-          el(
+          Element("h2", Props(key: None, children: [Text("Hello, World!")])),
+          Element(
             "p",
             Props(
               key: None,
-              children: [Html("The current time is: "), Html(current_time)],
+              children: [Text("The current time is: "), Text(current_time)],
             ),
           ),
         ],
