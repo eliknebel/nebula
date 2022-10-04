@@ -1,7 +1,7 @@
 import gleam/erlang
 import gleam/int
 import gleam/option.{None, Option, Some}
-import component.{Component}
+import component.{Component, ComponentContext, State, use_state}
 import components/html.{text}
 
 pub type ClockProps {
@@ -9,16 +9,18 @@ pub type ClockProps {
 }
 
 pub fn clock(props: ClockProps) {
-  Component(fn() {
+  Component(fn(ctx: ComponentContext) {
     let ClockProps(label) = props
 
     let current_time =
       erlang.system_time(erlang.Second)
       |> int.to_string()
 
+    let State(time, _set_time) = use_state(ctx, current_time)
+
     case label {
-      Some(label) -> [text(label), text(current_time)]
-      None -> [text(current_time)]
+      Some(label) -> [text(label), text(time)]
+      None -> [text(time)]
     }
   })
 }

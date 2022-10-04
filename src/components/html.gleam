@@ -14,7 +14,7 @@ pub type HtmlProps {
 }
 
 pub fn html(props: HtmlProps) {
-  Component(fn() {
+  Component(fn(_) {
     let HtmlProps(children) = props
 
     [Element("html", Props(key: None, children: children))]
@@ -26,7 +26,7 @@ pub type BodyProps {
 }
 
 pub fn body(props: BodyProps) {
-  Component(fn() {
+  Component(fn(_) {
     let BodyProps(children) = props
 
     [Element("body", Props(key: None, children: children))]
@@ -38,7 +38,7 @@ pub type H1Props {
 }
 
 pub fn h1(props: H1Props) {
-  Component(fn() {
+  Component(fn(_) {
     let H1Props(children) = props
 
     [Element("h1", Props(key: None, children: children))]
