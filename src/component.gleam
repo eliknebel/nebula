@@ -1,12 +1,12 @@
-import gleam/option.{Option}
 import gleam/list.{at}
-
-pub type Props {
-  Props(key: Option(String), children: List(Element))
-}
 
 type StateValue =
   String
+
+pub type Element {
+  Component(c: fn(ComponentContext) -> List(Element))
+  Text(text: String)
+}
 
 pub type Hook {
   State(state: StateValue, updater: fn(StateValue) -> StateValue)
@@ -19,12 +19,6 @@ pub type ComponentContext {
     h_index: Int,
     state_updater: fn(Int) -> fn(StateValue) -> StateValue,
   )
-}
-
-pub type Element {
-  Element(tag: String, props: Props)
-  Component(c: fn(ComponentContext) -> List(Element))
-  Text(text: String)
 }
 
 pub fn use_state(ctx: ComponentContext, initial: StateValue) -> Hook {

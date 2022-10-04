@@ -4,10 +4,12 @@ import gleam/http/response.{Response}
 import gleam/http/request.{Request}
 import gleam/bit_builder.{BitBuilder}
 import gleam/option.{None, Some}
-import component.{Component, ComponentContext, Props}
+import component.{Component, ComponentContext}
 import render.{render}
 import components/clock.{ClockProps, clock}
-import components/html.{BodyProps, H1Props, HtmlProps, body, el, h1, html, text}
+import components/html.{
+  BodyProps, ElProps, H1Props, HtmlProps, body, el, h1, html, text,
+}
 
 // Define a HTTP service
 //
@@ -16,21 +18,25 @@ pub fn my_service(context: ComponentContext) {
     let app =
       Component(fn(_) {
         [
-          html(HtmlProps(children: [
-            body(BodyProps(children: [
-              el(
-                "div",
-                Props(
-                  key: None,
-                  children: [
-                    h1(H1Props(children: [text("Hello, World!")])),
-                    clock(ClockProps(label: Some("The current time is: "))),
-                  ],
-                ),
+          html(
+            HtmlProps,
+            [
+              body(
+                BodyProps,
+                [
+                  el(
+                    "div",
+                    ElProps(key: None),
+                    [
+                      h1(H1Props, [text("Hello, World!")]),
+                      clock(ClockProps(label: Some("The current time is: "))),
+                    ],
+                  ),
+                  el("div", ElProps(key: None), [text("test")]),
+                ],
               ),
-              el("div", Props(key: None, children: [text("test")])),
-            ])),
-          ])),
+            ],
+          ),
         ]
       })
 

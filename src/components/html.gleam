@@ -1,46 +1,75 @@
-import gleam/option.{None}
-import component.{Component, Element, Props, Text}
+import gleam/list
+import gleam/string
+import gleam/option.{None, Option}
+import component.{Component, ComponentContext, Element, Text}
+import render.{render}
 
-pub fn el(tag: String, props: Props) {
-  Element(tag, props)
+pub type ElProps {
+  ElProps(key: Option(String))
 }
 
-pub fn text(text: String) {
+pub type Children =
+  List(Element)
+
+pub fn el(tag: String, props: ElProps, children: Children) {
+  Component(fn(ctx) { render_el(tag, props, children, ctx) })
+}
+
+fn render_el(
+  tag: String,
+  props: ElProps,
+  children: Children,
+  ctx: ComponentContext,
+) {
+  let ElProps(key: _key) = props
+  let inner_html =
+    children
+    |> list.map(fn(child) { render(child, ctx) })
+    |> string.concat
+
+  [
+    ["<", tag, ">", inner_html, "</", tag, ">"]
+    |> string.concat()
+    |> text(),
+  ]
+}
+
+pub fn text(text: String) -> Element {
   Text(text)
 }
 
 pub type HtmlProps {
-  HtmlProps(children: List(Element))
+  HtmlProps
 }
 
-pub fn html(props: HtmlProps) {
+pub fn html(props: HtmlProps, children: Children) {
   Component(fn(_) {
-    let HtmlProps(children) = props
+    let HtmlProps = props
 
-    [Element("html", Props(key: None, children: children))]
+    [el("html", ElProps(key: None), children)]
   })
 }
 
 pub type BodyProps {
-  BodyProps(children: List(Element))
+  BodyProps
 }
 
-pub fn body(props: BodyProps) {
+pub fn body(props: BodyProps, children: Children) {
   Component(fn(_) {
-    let BodyProps(children) = props
+    let BodyProps = props
 
-    [Element("body", Props(key: None, children: children))]
+    [el("body", ElProps(key: None), children)]
   })
 }
 
 pub type H1Props {
-  H1Props(children: List(Element))
+  H1Props
 }
 
-pub fn h1(props: H1Props) {
+pub fn h1(props: H1Props, children: Children) {
   Component(fn(_) {
-    let H1Props(children) = props
+    let H1Props = props
 
-    [Element("h1", Props(key: None, children: children))]
+    [el("h1", ElProps(key: None), children)]
   })
 }
