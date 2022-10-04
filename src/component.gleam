@@ -5,7 +5,11 @@ type StateValue =
 
 pub type Element {
   Component(c: fn(ComponentContext) -> List(Element))
-  Text(text: String)
+  RawHtml(html: String)
+}
+
+pub fn raw(html: String) {
+  RawHtml(html)
 }
 
 pub type Hook {

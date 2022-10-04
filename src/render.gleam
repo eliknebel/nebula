@@ -1,11 +1,11 @@
 import gleam/list
 import gleam/string
-import component.{Component, ComponentContext, Element, Text}
+import component.{Component, ComponentContext, Element, RawHtml}
 
 pub fn render(el: Element, ctx: ComponentContext) -> String {
   case el {
     Component(c) -> render_component(c, ctx)
-    Text(s) -> s
+    RawHtml(raw_html) -> raw_html
   }
 }
 

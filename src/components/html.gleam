@@ -1,7 +1,7 @@
 import gleam/list
 import gleam/string
 import gleam/option.{None, Option}
-import component.{Component, ComponentContext, Element, Text}
+import component.{Component, Element, raw}
 import render.{render}
 
 pub type ElProps {
@@ -12,30 +12,24 @@ pub type Children =
   List(Element)
 
 pub fn el(tag: String, props: ElProps, children: Children) {
-  Component(fn(ctx) { render_el(tag, props, children, ctx) })
-}
+  Component(fn(ctx) {
+    let ElProps(key: _key) = props
+    let inner_html =
+      children
+      |> list.map(fn(child) { render(child, ctx) })
+      |> string.concat
 
-fn render_el(
-  tag: String,
-  props: ElProps,
-  children: Children,
-  ctx: ComponentContext,
-) {
-  let ElProps(key: _key) = props
-  let inner_html =
-    children
-    |> list.map(fn(child) { render(child, ctx) })
-    |> string.concat
-
-  [
-    ["<", tag, ">", inner_html, "</", tag, ">"]
-    |> string.concat()
-    |> text(),
-  ]
+    [
+      ["<", tag, ">", inner_html, "</", tag, ">"]
+      |> string.concat()
+      |> raw(),
+    ]
+  })
 }
 
 pub fn text(text: String) -> Element {
-  Text(text)
+  // TODO: should html escape text coming into this function
+  raw(text)
 }
 
 pub type HtmlProps {
