@@ -5,11 +5,11 @@ import components/html.{
   BodyProps, ElProps, H1Props, HtmlProps, body, el, h1, html, text,
 }
 
-pub type AppProps {
-  AppProps
+pub type HelloViewProps {
+  HelloViewProps
 }
 
-pub fn app(_props: AppProps) {
+pub fn hello_view(_props: HelloViewProps) {
   Component(fn(_) {
     [
       html(
