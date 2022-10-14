@@ -24,9 +24,11 @@ pub type Route {
   Scope(path: String, middleware: List(Middleware), routes: List(Route))
 }
 
-pub type Middleware {
-  Middleware(f: fn(Conn) -> Conn)
-}
+// pub type Middleware {
+//   Middleware(f: fn(Conn) -> Conn)
+// }
+pub type Middleware =
+  fn(Conn) -> Conn
 
 pub type Router {
   Router(routes: List(Route))
@@ -68,7 +70,7 @@ fn router_service(router: Router) {
   fn(request: Request(BitString)) -> Response(BitBuilder) {
     let Request(path: path, ..) = request
     let Router(routes: routes) = router
-    process_request(Conn(request, context), path, routes)
+    process_request(Conn(request, context, response_headers: []), path, routes)
   }
 }
 
@@ -113,5 +115,5 @@ fn matching_route(path: String, routes: List(Route)) {
 }
 
 fn apply_middleware(conn: Conn, middleware: List(Middleware)) {
-  list.fold(middleware, conn, fn(acc, m) { m.f(acc) })
+  list.fold(middleware, conn, fn(acc, m) { m(acc) })
 }
